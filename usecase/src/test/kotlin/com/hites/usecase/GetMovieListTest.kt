@@ -7,7 +7,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class GetMovieListTest {
+internal class GetMovieListTest {
     private var mockRepository: IRepository = mockk()
     private var mockMovie: Movie = mockk()
     private val getMovieList = GetMovieList(mockRepository)
