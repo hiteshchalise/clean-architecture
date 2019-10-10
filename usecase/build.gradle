@@ -1,0 +1,17 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':data')
+    implementation project(':domain')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    testImplementation "io.mockk:mockk:1.9.3"
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
