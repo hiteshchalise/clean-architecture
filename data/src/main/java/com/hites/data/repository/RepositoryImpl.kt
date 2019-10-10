@@ -5,7 +5,7 @@ import com.hites.domain.Movie
 
 class RepositoryImpl(private val dataSource: DataSource) :
     IRepository {
-    override fun getMovieList(): List<Movie> {
+    override suspend fun getMovieList(): List<Movie> {
         return dataSource.getMovieList()
     }
 }

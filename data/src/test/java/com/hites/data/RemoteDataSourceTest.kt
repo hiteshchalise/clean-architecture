@@ -4,6 +4,7 @@ import com.hites.data.remote.MovieDbApiService
 import com.hites.data.source.RemoteDataSource
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import com.hites.domain.Movie as DomainMovie
@@ -19,10 +20,10 @@ class RemoteDataSourceTest {
     @Test
     fun `Should Return EmptyList From Service`() {
         // Given
-        every { movieDbApiService.getMovieList() } returns emptyList()
+        every { runBlocking {movieDbApiService.getMovieList()}} returns emptyList()
 
         // When
-        val movieList = remoteDataSource.getMovieList()
+        val movieList = runBlocking { remoteDataSource.getMovieList()}
 
         // Then
         assertEquals(movieList, emptyList<DataMovie>())
@@ -32,10 +33,10 @@ class RemoteDataSourceTest {
     fun `Should Return Proper List from Service`() {
         // Given
         val listOfMovie = listOf(dataMovie, dataMovie, dataMovie)
-        every { movieDbApiService.getMovieList() } returns listOfMovie
+        every { runBlocking { movieDbApiService.getMovieList()} } returns listOfMovie
 
         // When
-        val movieList = remoteDataSource.getMovieList()
+        val movieList = runBlocking {remoteDataSource.getMovieList()}
 
         // Then
         assertEquals(movieList.size, 3)

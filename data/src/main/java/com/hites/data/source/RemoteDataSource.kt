@@ -6,7 +6,7 @@ import com.hites.domain.Movie as DomainMovie
 
 class RemoteDataSource (private val movieDbApiService: MovieDbApiService) :
     DataSource {
-    override fun getMovieList(): List<DomainMovie> {
+    override suspend fun getMovieList(): List<DomainMovie> {
         val movieList = movieDbApiService.getMovieList()
         return convertToDomainMovie(movieList)
     }

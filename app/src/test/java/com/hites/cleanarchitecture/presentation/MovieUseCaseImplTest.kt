@@ -4,6 +4,7 @@ import com.hites.cleanarchitecture.Movie
 import com.hites.cleanarchitecture.framework.MovieApi
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -13,16 +14,17 @@ internal class MovieUseCaseImplTest {
     private val movieApi: MovieApi = mockk()
     private val movieUseCaseImpl = MovieUseCaseImpl(movieApi)
 
-    private val presentationMovie = Movie(0.0, 0, false, "", 0, false, "", "", "", emptyList(), "", 0.0, "", "")
+    private val presentationMovie =
+        Movie(0.0, 0, false, "", 0, false, "", "", "", emptyList(), "", 0.0, "", "")
     private val dataMovie =
         DataMovie(0.0, 0, false, "", 0, false, "", "", "", emptyList(), "", 0.0, "", "")
 
     @Test
     fun `Should Return Empty Movie List`() {
         // Given
-        every { movieApi.getMovieList() } returns emptyList()
+        every { runBlocking { movieApi.getMovieList() } } returns emptyList()
         // When
-        val movieList = movieUseCaseImpl.execute()
+        val movieList = runBlocking { movieUseCaseImpl.execute() }
         // Then
         assertEquals(movieList, emptyList<Movie>())
     }
@@ -30,15 +32,19 @@ internal class MovieUseCaseImplTest {
     @Test
     fun `Should Return Proper Movie List`() {
         // Given
-        every { movieApi.getMovieList() } returns listOf(dataMovie, dataMovie, dataMovie)
+        every { runBlocking { movieApi.getMovieList() } } returns listOf(
+            dataMovie,
+            dataMovie,
+            dataMovie
+        )
         // When
-        val movieList = movieUseCaseImpl.execute()
+        val movieList = runBlocking { movieUseCaseImpl.execute() }
         // Then
         assertEquals(movieList.size, 3)
     }
 
     @Test
-    fun `Should Convert DataMovie to PresentationMovie`(){
+    fun `Should Convert DataMovie to PresentationMovie`() {
         // Given
         val dataMovieList = listOf(dataMovie, dataMovie, dataMovie)
         val expectedMovieList = listOf(presentationMovie, presentationMovie, presentationMovie)

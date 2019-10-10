@@ -4,7 +4,7 @@ import com.hites.data.repository.IRepository
 import com.hites.domain.Movie
 
 class GetMovieList(private val repository: IRepository): MovieUseCase{
-    override fun execute(): List<Movie> {
+    override suspend fun execute(): List<Movie> {
         return repository.getMovieList()
     }
 }

@@ -4,6 +4,7 @@ import com.hites.data.repository.IRepository
 import com.hites.domain.Movie
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -15,23 +16,26 @@ internal class GetMovieListTest {
     @Test
     fun `Should Get Empty Movie List From Repository`() {
         // Given
-        every { mockRepository.getMovieList() } returns emptyList()
+        every { runBlocking { mockRepository.getMovieList() } } returns emptyList()
         // When
-        val movieDetailList: List<Movie> = getMovieList.execute()
-        // Then
+        val movieDetailList: List<Movie> = runBlocking {
+            getMovieList.execute()
+        } // Then
         assertEquals(movieDetailList, emptyList<Movie>())
     }
 
     @Test
-    fun `Should Get Proper MovieList from Repository`(){
+    fun `Should Get Proper MovieList from Repository`() {
         // Given
-        every { mockRepository.getMovieList() } returns listOf(
+        every { runBlocking { mockRepository.getMovieList() } } returns listOf(
             mockMovie,
             mockMovie,
-            mockMovie)
+            mockMovie
+        )
         // When
-        val movieDetails:List<Movie> = getMovieList.execute()
-        // Then
+        val movieDetails: List<Movie> = runBlocking {
+            getMovieList.execute()
+        } // Then
         assertEquals(movieDetails.size, 3)
     }
 }

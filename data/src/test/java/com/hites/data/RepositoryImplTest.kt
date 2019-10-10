@@ -5,29 +5,34 @@ import com.hites.data.source.DataSource
 import com.hites.domain.Movie
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class RepositoryImplTest{
+class RepositoryImplTest {
     private val dataSource: DataSource = mockk()
     private val repository = RepositoryImpl(dataSource)
     private val mockMovie: Movie = mockk()
     @Test
-    fun `Should Get Empty List From Remote` (){
+    fun `Should Get Empty List From Remote`() {
         // Given
-        every { dataSource.getMovieList() } returns emptyList()
+        every { runBlocking { dataSource.getMovieList() } } returns emptyList()
         // When
-        val movieList = repository.getMovieList()
+        val movieList = runBlocking { repository.getMovieList() }
         // Then
         assertEquals(movieList, emptyList<Movie>())
     }
 
     @Test
-    fun `Should Get Proper List From Remote` (){
+    fun `Should Get Proper List From Remote`() {
         // Given
-        every { dataSource.getMovieList() } returns listOf(mockMovie, mockMovie, mockMovie)
+        every { runBlocking { dataSource.getMovieList() } } returns listOf(
+            mockMovie,
+            mockMovie,
+            mockMovie
+        )
         // When
-        val movieList = repository.getMovieList()
+        val movieList = runBlocking { repository.getMovieList() }
         // Then
         assertEquals(movieList.size, 3)
     }
